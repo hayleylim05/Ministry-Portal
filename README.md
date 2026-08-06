@@ -6,7 +6,6 @@ This was built for Church of Singapore's Music Ministry but any other church min
 
 🔗 **[View the live site here](https://cosmusicministry.onrender.com)** 
 
----
 
 ## Contents of Web Portal
 
@@ -22,7 +21,6 @@ This was built for Church of Singapore's Music Ministry but any other church min
 - Handbook is searchable and easy to navigate across sections and chapters
 - Announcements are tagged by category (e.g. General, Events, Worship)
 
----
 
 ## For Admins
 
@@ -37,7 +35,6 @@ Go to `/admin` on the live site and enter the admin password.
 - **Handbook** — Add or edit sections and chapters. The editor supports rich text formatting (bold, italics, headings, lists).
 - **Export** — Download the full Co-workers Handbook as a Word document (.docx) at any time.
 
----
 
 ## For Developers
 
