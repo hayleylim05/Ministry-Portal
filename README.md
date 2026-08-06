@@ -1,6 +1,6 @@
 # Web Portal for Church Ministries 
 
-A web portal built for church ministries to centralise announcements, resources and information for Co-workers (i.e. the Co-workers handbook).
+A web portal built for church ministries to **centralise announcements, resources and information for Co-workers**.
 
 This was built for Church of Singapore's Music Ministry but any other church ministry is welcome to use this and adapt this as needed for your ministry. 
 
@@ -11,15 +11,15 @@ This was built for Church of Singapore's Music Ministry but any other church min
 
 **Pages**
 - **Home** — Contains a hero section, a welcome message and navigation panel. 
-- **Announcements** — Latest announcements from the ministry, with photos and tags
-- **Handbook** — The Co-workers Handbook, organised by section and chapter, with a table of contents for easy navigation
-- **Resources** — Articles and reference material for Co-workers
+- **Announcements** — Latest announcements from the ministry, with photos and tags.
+- **Handbook** — The Co-workers Handbook, organised by section and chapter, with a table of contents for easy navigation.
+- **Resources** — Articles and reference material for Co-workers.
 
 **Features**
-- Hero section on home page and a welcome message to welcome Co-workers and visitors of the site
-- Smooth page animations and mobile-friendly layout
-- Handbook is searchable and easy to navigate across sections and chapters
-- Announcements are tagged by category (e.g. General, Events, Worship)
+- Liquid glass design for cards and navigation panel. 
+- Smooth page animations and mobile-friendly layout.
+- Handbook is searchable and easy to navigate across sections and chapters.
+- Announcements are tagged by category (e.g. General, Events, Worship).
 
 
 ## For Admins
@@ -33,6 +33,7 @@ Go to `/admin` on the live site and enter the admin password.
 **What you can do**
 - **Announcements** — Add, edit, or remove announcements. You can upload an image, set a date, and tag each post.
 - **Handbook** — Add or edit sections and chapters. The editor supports rich text formatting (bold, italics, headings, lists).
+- **Resources** — Upload resources for Co-workers in the form of external links or a typed out article.
 - **Export** — Download the full Co-workers Handbook as a Word document (.docx) at any time.
 
 
