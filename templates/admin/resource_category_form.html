@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Add Category — Admin{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">+ Add Category</h1>
+  <a href="{{ url_for('admin_resources') }}" class="breadcrumb">← Resources</a>
+</div>
+
+<form method="POST" class="content-form">
+  <div class="form-group">
+    <label class="form-label">Category Name</label>
+    <input type="text" name="name" class="form-input" required placeholder="e.g. Worship, Training, AV" autofocus />
+  </div>
+  <div class="form-actions">
+    <button type="submit" class="btn btn--primary">Add category</button>
+    <a href="{{ url_for('admin_resources') }}" class="btn">Cancel</a>
+  </div>
+</form>
+{% endblock %}

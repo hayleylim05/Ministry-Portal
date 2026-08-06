@@ -1,0 +1,63 @@
+{% extends "base_editorial.html" %}
+{% block title %}Announcements — COS Music Ministry{% endblock %}
+{% block eyebrow %}COS Music Ministry{% endblock %}
+{% block hero_title %}Announcements{% endblock %}
+{% block subtitle %}Latest updates, notices and reminders from the ministry.{% endblock %}
+
+{% block hero_image %}{% endblock %}
+
+{% block content %}
+<div class="sec-content">
+  {% if announcements %}
+    <div class="ann-grid">
+      {% for a in announcements %}
+      <div class="ann-card reveal"
+           data-title="{{ a.title | e }}"
+           data-body="{{ a.body | e }}"
+           data-tag="{{ a.tag | e }}"
+           data-date="{{ a.date | e }}"
+           data-img="{{ a.image_url | e }}">
+        {% if a.image_url %}
+        <div class="ann-card__img-wrap">
+          <img src="{{ a.image_url }}" alt="{{ a.title }}" class="ann-card__img" />
+        </div>
+        {% endif %}
+        <div class="ann-card__body {% if not a.image_url %}ann-card__body--no-img{% endif %}">
+          <div class="ann-card__meta">
+            {% if a.tag %}<span class="ann-card__tag">{{ a.tag }}</span>{% endif %}
+            <span class="ann-card__date">{{ a.date }}</span>
+          </div>
+          <h3 class="ann-card__title">{{ a.title }}</h3>
+          <p class="ann-card__desc">{{ a.body | striptags }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Modal overlay -->
+    <div class="ann-overlay" id="ann-overlay">
+      <div class="ann-modal" id="ann-modal" role="dialog" aria-modal="true">
+        <button class="ann-modal__close" id="ann-modal-close" aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+        <div class="ann-modal__img-wrap" id="ann-modal-img-wrap">
+          <img id="ann-modal-img" src="" alt="" />
+        </div>
+        <div class="ann-modal__body">
+          <div class="ann-card__meta" style="margin-bottom: 10px;">
+            <span class="ann-card__tag" id="ann-modal-tag"></span>
+            <span class="ann-card__date" id="ann-modal-date"></span>
+          </div>
+          <h2 class="ann-modal__title" id="ann-modal-title"></h2>
+          <div class="ann-modal__text" id="ann-modal-text"></div>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <div class="empty-state__icon">📭</div>
+      <p>No announcements yet. Check back soon!</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

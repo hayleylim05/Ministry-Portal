@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if item else 'Add' }} Resource — Admin{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">{{ '✏️ Edit Resource' if item else '+ Add Resource' }}</h1>
+  <a href="{{ url_for('admin_resources') }}" class="breadcrumb">← Resources</a>
+</div>
+
+<form method="POST" class="content-form">
+  <div class="form-group">
+    <label class="form-label">Title</label>
+    <input type="text" name="title" class="form-input" required
+           placeholder="e.g. Sunday Worship Guide"
+           value="{{ item.title if item else '' }}" />
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label class="form-label">Category</label>
+      {% if preset_category %}
+        <input type="text" name="category" class="form-input" value="{{ preset_category }}" readonly style="background:var(--bg-hover);color:var(--text-light);" />
+      {% elif item %}
+        <input type="text" name="category" class="form-input" value="{{ item_category }}" readonly style="background:var(--bg-hover);color:var(--text-light);" />
+      {% else %}
+        <input type="text" name="category" class="form-input" list="cat-list" required placeholder="e.g. Worship, Training" />
+        <datalist id="cat-list">
+          {% for c in categories %}
+            <option value="{{ c }}">
+          {% endfor %}
+        </datalist>
+      {% endif %}
+    </div>
+    <div class="form-group">
+      <label class="form-label">Type</label>
+      <select name="type" id="type-select" class="form-input" onchange="handleTypeChange(this.value)">
+        <option value="link"    {% if item and item.type == 'link'    %}selected{% endif %}>Link</option>
+        <option value="video"   {% if item and item.type == 'video'   %}selected{% endif %}>Video</option>
+        <option value="doc"     {% if item and item.type == 'doc'     %}selected{% endif %}>Document</option>
+        <option value="audio"   {% if item and item.type == 'audio'   %}selected{% endif %}>Audio</option>
+        <option value="article" {% if item and item.type == 'article' %}selected{% endif %}>Article</option>
+        <option value="other"   {% if item and item.type == 'other'   %}selected{% endif %}>Other</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group" id="url-field">
+    <label class="form-label">URL <span class="form-hint">(optional)</span></label>
+    <input type="url" name="url" class="form-input" placeholder="https://..."
+           value="{{ item.url if item and item.url else '' }}" />
+  </div>
+
+  <div class="form-group" id="content-field" style="display:none;">
+    <label class="form-label">Article Content <span class="form-hint">(HTML supported)</span></label>
+    <textarea name="content" class="form-textarea" rows="16"
+              placeholder="Write your article here. You can use HTML tags like &lt;p&gt;, &lt;h3&gt;, &lt;strong&gt;, &lt;ol&gt;, &lt;a href=&quot;...&quot;&gt;...">{{ item.content if item and item.content else '' }}</textarea>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Description <span class="form-hint">(optional — shown on the resources page)</span></label>
+    <textarea name="description" class="form-textarea" rows="3"
+              placeholder="Brief description of this resource...">{{ item.description if item else '' }}</textarea>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn--primary">{{ 'Save changes' if item else 'Add resource' }}</button>
+    <a href="{{ url_for('admin_resources') }}" class="btn">Cancel</a>
+  </div>
+</form>
+
+<script>
+function handleTypeChange(type) {
+  const urlField     = document.getElementById('url-field');
+  const contentField = document.getElementById('content-field');
+  if (type === 'article') {
+    urlField.style.display     = 'none';
+    contentField.style.display = 'block';
+  } else {
+    urlField.style.display     = 'block';
+    contentField.style.display = 'none';
+  }
+}
+// Run on page load so edit page reflects the saved type
+handleTypeChange(document.getElementById('type-select').value);
+</script>
+{% endblock %}

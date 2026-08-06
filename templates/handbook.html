@@ -1,0 +1,38 @@
+{% extends "base_editorial.html" %}
+{% block title %}Co-workers Handbook — COS Music Ministry{% endblock %}
+{% block eyebrow %}COS Music Ministry{% endblock %}
+{% block hero_title %}Co-workers<br>Handbook{% endblock %}
+{% block subtitle %}{% endblock %}
+
+{% block hero_image %}{% endblock %}
+
+{% block content %}
+<div class="sec-content" style="max-width: 960px;">
+  <p class="handbook-overview reveal">This handbook is for all co-workers serving in the COS Music Ministry. It covers who we are, how we serve, and the processes that keep our ministry running well. Please read through each section carefully, and reach out to your Service / Ministry Representative if you have any questions.</p>
+</div>
+
+<div class="sec-content">
+  {% if sections %}
+    <div class="bento-grid">
+      {% for s in sections %}
+      <a href="{{ url_for('handbook_section', section_id=s.id) }}" class="bento-card reveal">
+        <div class="bento-card__num">{{ loop.index }}</div>
+        <div>
+          <div class="bento-card__title">{{ s.title }}</div>
+          {% if s.description %}
+            <div class="bento-card__desc">{{ s.description }}</div>
+          {% endif %}
+        </div>
+        <div class="bento-card__arrow">→</div>
+      </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <div class="empty-state__icon">📄</div>
+      <p>The handbook is being prepared. Come back soon!</p>
+    </div>
+  {% endif %}
+</div>
+
+{% endblock %}

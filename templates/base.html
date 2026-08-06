@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}COS Music Ministry{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <div class="workspace-icon">🎵</div>
+      <div class="workspace-name">
+        <span class="workspace-title">COS Music Ministry</span>
+        <span class="workspace-sub">Co-workers</span>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <a href="{{ url_for('index') }}" class="nav-item {% if request.endpoint == 'index' %}active{% endif %}">
+        <span class="nav-icon">🏠</span> Home
+      </a>
+      <a href="{{ url_for('announcements') }}" class="nav-item {% if request.endpoint == 'announcements' %}active{% endif %}">
+        <span class="nav-icon">📢</span> Announcements
+      </a>
+      <a href="{{ url_for('handbook') }}" class="nav-item {% if request.endpoint == 'handbook' %}active{% endif %}">
+        <span class="nav-icon">📖</span> Co-workers Handbook
+      </a>
+      <a href="{{ url_for('resources') }}" class="nav-item {% if request.endpoint == 'resources' %}active{% endif %}">
+        <span class="nav-icon">📁</span> Resources
+      </a>
+    </div>
+
+    {% if session.get('admin') %}
+    <div class="nav-section nav-section--bottom">
+      <div class="nav-divider"></div>
+      <a href="{{ url_for('admin_dashboard') }}" class="nav-item nav-item--admin">
+        <span class="nav-icon">⚙️</span> Admin
+      </a>
+      <a href="{{ url_for('admin_logout') }}" class="nav-item nav-item--subtle">
+        <span class="nav-icon">🚪</span> Log out
+      </a>
+    </div>
+    {% endif %}
+  </nav>
+
+  <!-- Main content -->
+  <main class="main">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-container">
+          {% for category, message in messages %}
+            <div class="flash flash--{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

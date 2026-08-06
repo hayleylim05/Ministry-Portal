@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}{{ section.title }} — Chapters — Admin{% endblock %}
+
+{% block content %}
+<div class="page-header page-header--flex">
+  <div>
+    <h1 class="page-title">{{ section.title }}</h1>
+    <a href="{{ url_for('admin_handbook') }}" class="breadcrumb">← Handbook sections</a>
+  </div>
+  <a href="{{ url_for('admin_handbook_chapter_new', section_id=section.id) }}" class="btn btn--primary">+ New Chapter</a>
+</div>
+
+{% if section.chapters %}
+<div class="admin-table-wrapper">
+  <table class="admin-table">
+    <thead>
+      <tr><th>#</th><th>Chapter Title</th><th>Order</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for ch in section.chapters %}
+      <tr>
+        <td class="td-muted">{{ loop.index }}</td>
+        <td>{{ ch.title }}</td>
+        <td>
+          <div style="display:flex; gap:4px;">
+            <form method="POST" action="{{ url_for('admin_handbook_chapter_move', section_id=section.id, chapter_id=ch.id, direction='up') }}">
+              <button type="submit" class="btn btn--sm" {% if loop.first %}disabled{% endif %} title="Move up">↑</button>
+            </form>
+            <form method="POST" action="{{ url_for('admin_handbook_chapter_move', section_id=section.id, chapter_id=ch.id, direction='down') }}">
+              <button type="submit" class="btn btn--sm" {% if loop.last %}disabled{% endif %} title="Move down">↓</button>
+            </form>
+          </div>
+        </td>
+        <td class="td-actions">
+          <a href="{{ url_for('admin_handbook_chapter_edit', section_id=section.id, chapter_id=ch.id) }}" class="btn btn--sm">Edit</a>
+          <form method="POST" action="{{ url_for('admin_handbook_chapter_delete', section_id=section.id, chapter_id=ch.id) }}" style="display:inline" onsubmit="return confirm('Delete this chapter?')">
+            <button type="submit" class="btn btn--sm btn--danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+  <div class="empty-state"><p>No chapters yet. Add one above.</p></div>
+{% endif %}
+{% endblock %}

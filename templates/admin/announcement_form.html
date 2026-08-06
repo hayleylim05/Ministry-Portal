@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if item else 'New' }} Announcement — Admin{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">{{ '✏️ Edit' if item else '+ New' }} Announcement</h1>
+  <a href="{{ url_for('admin_announcements') }}" class="breadcrumb">← Announcements</a>
+</div>
+
+<form method="POST" enctype="multipart/form-data" class="content-form">
+  <div class="form-group">
+    <label class="form-label">Title</label>
+    <input type="text" name="title" class="form-input" value="{{ item.title if item else '' }}" required placeholder="e.g. Rehearsal this Sunday" />
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label class="form-label">Date</label>
+      <input type="date" name="date" class="form-input" value="{{ item.date if item else '' }}" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tag <span class="form-hint">(optional)</span></label>
+      <input type="text" name="tag" class="form-input" value="{{ item.tag if item else '' }}" placeholder="e.g. Rehearsal, Worship, Admin" />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Body <span class="form-hint">(HTML supported — e.g. &lt;a href="..."&gt;link text&lt;/a&gt;)</span></label>
+    <textarea name="body" class="form-textarea" rows="8" required placeholder="Announcement details...">{{ item.body if item else '' }}</textarea>
+  </div>
+
+  <!-- Image -->
+  <div class="form-group">
+    <label class="form-label">Photo <span class="form-hint">(optional)</span></label>
+
+    {% if item and item.image_url %}
+    <div style="margin-bottom: 12px;">
+      <img src="{{ item.image_url }}" alt="Current image" style="max-width: 320px; max-height: 200px; border-radius: 8px; object-fit: cover; display: block;" />
+      <p style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">Current image — upload a new one to replace it.</p>
+    </div>
+    {% endif %}
+
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <div>
+        <p class="form-hint" style="margin-bottom: 6px;">Upload from computer</p>
+        <input type="file" name="image_file" accept="image/*" class="form-input" style="padding: 6px;" />
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-size: 13px;">
+        <div style="flex: 1; height: 1px; background: var(--border);"></div>
+        or paste URL
+        <div style="flex: 1; height: 1px; background: var(--border);"></div>
+      </div>
+      <input type="url" name="image_url" class="form-input" value="{{ item.image_url if item and item.image_url and not item.image_url.startswith('data:') else '' }}" placeholder="https://example.com/image.jpg" />
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn--primary">{{ 'Save changes' if item else 'Add announcement' }}</button>
+    <a href="{{ url_for('admin_announcements') }}" class="btn">Cancel</a>
+  </div>
+</form>
+{% endblock %}

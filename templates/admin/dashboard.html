@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard — COS Music Ministry{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">⚙️ Admin Dashboard</h1>
+  <p class="page-subtitle">Manage content for the COS Music Ministry portal.</p>
+</div>
+
+<div class="admin-cards">
+  <a href="{{ url_for('admin_announcements') }}" class="admin-nav-card">
+    <div class="admin-nav-card__icon">📢</div>
+    <div class="admin-nav-card__body">
+      <div class="admin-nav-card__title">Announcements</div>
+      <div class="admin-nav-card__count">{{ announcement_count }} item{{ 's' if announcement_count != 1 }}</div>
+    </div>
+  </a>
+
+  <a href="{{ url_for('admin_handbook') }}" class="admin-nav-card">
+    <div class="admin-nav-card__icon">📖</div>
+    <div class="admin-nav-card__body">
+      <div class="admin-nav-card__title">Handbook</div>
+      <div class="admin-nav-card__count">{{ handbook_count }} section{{ 's' if handbook_count != 1 }}</div>
+    </div>
+  </a>
+
+  <a href="{{ url_for('admin_resources') }}" class="admin-nav-card">
+    <div class="admin-nav-card__icon">📁</div>
+    <div class="admin-nav-card__body">
+      <div class="admin-nav-card__title">Resources</div>
+      <div class="admin-nav-card__count">{{ resource_count }} item{{ 's' if resource_count != 1 }}</div>
+    </div>
+  </a>
+</div>
+{% endblock %}

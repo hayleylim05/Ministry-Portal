@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}{{ chapter.title }} — {{ section.title }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="breadcrumb-trail">
+    <a href="{{ url_for('handbook') }}" class="breadcrumb-trail__link">Co-workers Handbook</a>
+    <span class="breadcrumb-trail__sep">›</span>
+    <a href="{{ url_for('handbook_section', section_id=section.id) }}" class="breadcrumb-trail__link">{{ section.title }}</a>
+  </div>
+  <h1 class="page-title">{{ chapter.title }}</h1>
+</div>
+
+<div class="chapter-content">
+  {{ chapter.content | safe }}
+</div>
+
+<!-- Prev / Next -->
+<div class="chapter-nav">
+  <div class="chapter-nav__prev">
+    {% if prev_ch %}
+      <a href="{{ url_for('handbook_chapter', section_id=section.id, chapter_id=prev_ch.id) }}" class="chapter-nav__link">
+        <span class="chapter-nav__dir">← Previous</span>
+        <span class="chapter-nav__title">{{ prev_ch.title }}</span>
+      </a>
+    {% endif %}
+  </div>
+  <div class="chapter-nav__next">
+    {% if next_ch %}
+      <a href="{{ url_for('handbook_chapter', section_id=section.id, chapter_id=next_ch.id) }}" class="chapter-nav__link chapter-nav__link--right">
+        <span class="chapter-nav__dir">Next →</span>
+        <span class="chapter-nav__title">{{ next_ch.title }}</span>
+      </a>
+    {% else %}
+      <a href="{{ url_for('handbook_section', section_id=section.id) }}" class="chapter-nav__link chapter-nav__link--right">
+        <span class="chapter-nav__dir">Done ✓</span>
+        <span class="chapter-nav__title">Back to section</span>
+      </a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

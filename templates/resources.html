@@ -1,0 +1,41 @@
+{% extends "base_editorial.html" %}
+{% block title %}Resources — COS Music Ministry{% endblock %}
+{% block eyebrow %}COS Music Ministry{% endblock %}
+{% block hero_title %}Resources{% endblock %}
+{% block subtitle %}Songs, guides, and materials to help you grow.{% endblock %}
+
+{% block content %}
+<div class="sec-content">
+  {% if categories %}
+    {% for cat in categories %}
+    <section class="resource-category reveal">
+      <h2 class="resource-category__title">{{ cat.name }}</h2>
+      <div class="resource-grid">
+        {% for item in cat['items'] %}
+        <div class="resource-card">
+          <h3 class="resource-card__title">{{ item.title }}</h3>
+          {% if item.description %}
+            <p class="resource-card__desc">{{ item.description }}</p>
+          {% endif %}
+          {% if item.type == 'article' %}
+            <a href="{{ url_for('resource_article', item_id=item.id) }}" class="resource-card__link">
+              Read article →
+            </a>
+          {% elif item.url %}
+            <a href="{{ item.url }}" class="resource-card__link" target="_blank" rel="noopener">
+              Open resource →
+            </a>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% endfor %}
+  {% else %}
+    <div class="empty-state">
+      <div class="empty-state__icon">📂</div>
+      <p>No resources uploaded yet.</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

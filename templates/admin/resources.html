@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Resources — Admin{% endblock %}
+
+{% block content %}
+<div class="page-header page-header--flex">
+  <div>
+    <h1 class="page-title">📁 Resources</h1>
+    <a href="{{ url_for('admin_dashboard') }}" class="breadcrumb">← Dashboard</a>
+  </div>
+  <a href="{{ url_for('admin_resource_new_category') }}" class="btn btn--primary">+ Add Category</a>
+</div>
+
+{% if categories %}
+  {% for cat in categories %}
+  <section class="admin-resource-category">
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+      <h2 class="admin-resource-category__title" style="margin-bottom:0;">{{ cat.name }}</h2>
+      <button class="btn btn--sm" onclick="toggleCatEdit('{{ loop.index }}')">Rename</button>
+      <form method="POST" action="{{ url_for('admin_resource_category_move', category_name=cat.name, direction='up') }}" style="display:inline">
+        <button type="submit" class="btn btn--sm" {% if loop.first %}disabled{% endif %} title="Move up">↑</button>
+      </form>
+      <form method="POST" action="{{ url_for('admin_resource_category_move', category_name=cat.name, direction='down') }}" style="display:inline">
+        <button type="submit" class="btn btn--sm" {% if loop.last %}disabled{% endif %} title="Move down">↓</button>
+      </form>
+    </div>
+    <form id="cat-edit-{{ loop.index }}" method="POST"
+          action="{{ url_for('admin_resource_rename_category') }}"
+          style="display:none; margin-bottom:12px; align-items:center; gap:8px;">
+      <input type="hidden" name="old_name" value="{{ cat.name }}" />
+      <input type="text" name="new_name" value="{{ cat.name }}" class="form-input" style="max-width:220px;" required />
+      <button type="submit" class="btn btn--primary btn--sm">Save</button>
+      <button type="button" class="btn btn--sm" onclick="toggleCatEdit('{{ loop.index }}')">Cancel</button>
+    </form>
+    <div class="admin-table-wrapper">
+      <table class="admin-table">
+        <thead>
+          <tr><th>Title</th><th>Type</th><th>Description</th><th></th></tr>
+        </thead>
+        <tbody>
+          {% for item in cat['items'] %}
+          <tr>
+            <td>
+              {% if item.url %}
+                <a href="{{ item.url }}" target="_blank" class="table-link">{{ item.title }}</a>
+              {% else %}
+                {{ item.title }}
+              {% endif %}
+            </td>
+            <td><span class="tag type-{{ item.type }}">{{ item.type }}</span></td>
+            <td class="td-muted">{{ item.description | truncate(60) }}</td>
+            <td class="td-actions">
+              <a href="{{ url_for('admin_resource_edit', item_id=item.id) }}" class="btn btn--sm">Edit</a>
+              <form method="POST" action="{{ url_for('admin_resource_delete', item_id=item.id) }}" style="display:inline" onsubmit="return confirm('Delete this resource?')">
+                <button type="submit" class="btn btn--sm btn--danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:8px;">
+      <a href="{{ url_for('admin_resource_new', category=cat.name) }}" class="btn btn--sm">+ Add Resource</a>
+    </div>
+  </section>
+  {% endfor %}
+{% else %}
+  <div class="empty-state"><p>No categories yet. Add one above.</p></div>
+{% endif %}
+
+<script>
+function toggleCatEdit(id) {
+  const form = document.getElementById('cat-edit-' + id);
+  form.style.display = (form.style.display === 'flex') ? 'none' : 'flex';
+}
+</script>
+{% endblock %}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login — COS Music Ministry</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body class="login-body">
+  <div class="login-card">
+    <div class="login-card__icon">🔐</div>
+    <h1 class="login-card__title">Admin Login</h1>
+    <p class="login-card__sub">COS Music Ministry</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="flash flash--{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    <form method="POST" class="login-form">
+      <label class="form-label">Password</label>
+      <input type="password" name="password" class="form-input" autofocus required />
+      <button type="submit" class="btn btn--primary btn--full">Sign in</button>
+    </form>
+
+    <a href="{{ url_for('index') }}" class="login-back">← Back to site</a>
+  </div>
+</body>
+</html>

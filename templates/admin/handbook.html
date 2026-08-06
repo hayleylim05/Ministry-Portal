@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Handbook — Admin{% endblock %}
+
+{% block content %}
+<div class="page-header page-header--flex">
+  <div>
+    <h1 class="page-title">📖 Handbook</h1>
+    <a href="{{ url_for('admin_dashboard') }}" class="breadcrumb">← Dashboard</a>
+  </div>
+  <div style="display:flex; gap:8px;">
+    <a href="{{ url_for('admin_handbook_docx') }}" class="btn">⬇ Download Word</a>
+    <a href="{{ url_for('admin_handbook_new') }}" class="btn btn--primary">+ New Section</a>
+  </div>
+</div>
+
+{% if sections %}
+<div class="admin-table-wrapper">
+  <table class="admin-table">
+    <thead>
+      <tr><th>#</th><th>Section Title</th><th>Chapters</th><th>Order</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for s in sections %}
+      <tr>
+        <td class="td-muted">{{ loop.index }}</td>
+        <td>{{ s.title }}</td>
+        <td class="td-muted">{{ s.chapters | length }}</td>
+        <td>
+          <div style="display:flex; gap:4px;">
+            <form method="POST" action="{{ url_for('admin_handbook_section_move', section_id=s.id, direction='up') }}">
+              <button type="submit" class="btn btn--sm" {% if loop.first %}disabled{% endif %} title="Move up">↑</button>
+            </form>
+            <form method="POST" action="{{ url_for('admin_handbook_section_move', section_id=s.id, direction='down') }}">
+              <button type="submit" class="btn btn--sm" {% if loop.last %}disabled{% endif %} title="Move down">↓</button>
+            </form>
+          </div>
+        </td>
+        <td class="td-actions">
+          <a href="{{ url_for('admin_handbook_chapters', section_id=s.id) }}" class="btn btn--sm">Chapters</a>
+          <a href="{{ url_for('admin_handbook_edit', section_id=s.id) }}" class="btn btn--sm">Edit</a>
+          <form method="POST" action="{{ url_for('admin_handbook_delete', section_id=s.id) }}" style="display:inline" onsubmit="return confirm('Delete this section and all its chapters?')">
+            <button type="submit" class="btn btn--sm btn--danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+  <div class="empty-state"><p>No sections yet.</p></div>
+{% endif %}
+{% endblock %}

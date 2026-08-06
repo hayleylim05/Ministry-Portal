@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if item else 'New' }} Section — Admin{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">{{ '✏️ Edit' if item else '+ New' }} Section</h1>
+  <a href="{{ url_for('admin_handbook') }}" class="breadcrumb">← Handbook</a>
+</div>
+
+<form method="POST" class="content-form">
+  <div class="form-group">
+    <label class="form-label">Section Title</label>
+    <input type="text" name="title" class="form-input" value="{{ item.title if item else '' }}" required placeholder="e.g. About COS MM" />
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Description <span class="form-hint">(shown on the handbook index)</span></label>
+    <input type="text" name="description" class="form-input" value="{{ item.description if item else '' }}" placeholder="Brief description of this section" />
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn--primary">{{ 'Save changes' if item else 'Add section' }}</button>
+    <a href="{{ url_for('admin_handbook') }}" class="btn">Cancel</a>
+  </div>
+</form>
+{% endblock %}

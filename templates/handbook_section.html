@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ section.title }} — Co-workers Handbook</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,900;1,300&display=swap" rel="stylesheet" />
+</head>
+<body class="home-body">
+
+  <!-- Top nav -->
+  <nav class="hnav hnav--scrolled" id="hnav">
+    <a href="{{ url_for('index') }}" class="hnav__logo">Home</a>
+    <div class="hnav__links">
+      <a href="{{ url_for('announcements') }}" class="hnav__link">Announcements</a>
+      <a href="{{ url_for('handbook') }}" class="hnav__link hnav__link--active">Co-workers Handbook</a>
+      <a href="{{ url_for('resources') }}" class="hnav__link">Resources</a>
+    </div>
+    {% if session.get('admin') %}
+      <a href="{{ url_for('admin_dashboard') }}" class="hnav__admin">Admin ↗</a>
+    {% else %}
+      <a href="{{ url_for('admin_login') }}" class="hnav__admin">Sign in</a>
+    {% endif %}
+    <button class="hnav__burger" id="hnav-burger" aria-label="Menu" aria-expanded="false">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </nav>
+
+  <div class="doc-layout">
+
+    <!-- Sidebar: other sections -->
+    <aside class="doc-sidebar">
+      <a href="{{ url_for('handbook') }}" class="doc-sidebar__back">← Handbook</a>
+      <div class="doc-sidebar__sections">
+        {% for s in sections %}
+        <a href="{{ url_for('handbook_section', section_id=s.id) }}"
+           class="doc-sidebar__link {% if s.id == section.id %}doc-sidebar__link--active{% endif %}">
+          <span class="doc-sidebar__num">{{ loop.index }}</span>
+          {{ s.title }}
+        </a>
+        {% endfor %}
+      </div>
+    </aside>
+
+    <!-- Document content -->
+    <main class="doc-main">
+      <div class="page-header">
+        <h1 class="page-title reveal">{{ section.title }}</h1>
+        {% if section.description %}
+          <p class="page-subtitle reveal reveal--delay-1">{{ section.description }}</p>
+        {% endif %}
+      </div>
+
+      {% if section.chapters %}
+        <div class="toc reveal">
+          <p class="toc__label">On this page</p>
+          <ul class="toc__list">
+            {% for ch in section.chapters %}
+              <li><a href="#chapter-{{ ch.id }}">{{ ch.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="handbook-body" id="handbook-body">
+          {% for ch in section.chapters %}
+          <section class="handbook-section reveal" id="chapter-{{ ch.id }}">
+            <h2 class="handbook-section__title">{{ ch.title }}</h2>
+            <div class="handbook-section__content">{{ ch.content | safe }}</div>
+          </section>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-state"><p>No content yet in this section.</p></div>
+      {% endif %}
+    </main>
+  </div>
+
+  <a href="#handbook-body" class="doc-scroll" aria-label="Scroll to content">
+    <span>Scroll</span>
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 9l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

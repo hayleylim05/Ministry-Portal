@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Announcements — Admin{% endblock %}
+
+{% block content %}
+<div class="page-header page-header--flex">
+  <div>
+    <h1 class="page-title">📢 Announcements</h1>
+    <a href="{{ url_for('admin_dashboard') }}" class="breadcrumb">← Dashboard</a>
+  </div>
+  <a href="{{ url_for('admin_announcement_new') }}" class="btn btn--primary">+ New Announcement</a>
+</div>
+
+{% if announcements %}
+<div class="admin-table-wrapper">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Title</th>
+        <th>Tag</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for a in announcements %}
+      <tr>
+        <td class="td-muted">{{ a.date }}</td>
+        <td>{{ a.title }}</td>
+        <td>{% if a.tag %}<span class="tag">{{ a.tag }}</span>{% endif %}</td>
+        <td class="td-actions">
+          <a href="{{ url_for('admin_announcement_edit', item_id=a.id) }}" class="btn btn--sm">Edit</a>
+          <form method="POST" action="{{ url_for('admin_announcement_delete', item_id=a.id) }}" style="display:inline" onsubmit="return confirm('Delete this announcement?')">
+            <button type="submit" class="btn btn--sm btn--danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+  <div class="empty-state"><p>No announcements yet. Add one above.</p></div>
+{% endif %}
+{% endblock %}
