@@ -4,8 +4,6 @@ A web portal built for church ministries to **centralise announcements, resource
 
 This was built for Church of Singapore's Music Ministry but any other church ministry is welcome to use this and adapt this as needed for your ministry. 
 
-🔗 **[View the live site here](https://cosmusicministry.onrender.com)** 
-
 
 ## Contents of Web Portal
 
